@@ -5,28 +5,22 @@
 #![reexport_test_harness_main = "test_main"]
 
 use core::panic::PanicInfo;
-use r_os::println;
+use r_os::{serial_print,println};
 
 //noinspection RsUnresolvedReference
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
-    println!("Asdf");
-
-    #[cfg(test)]
     test_main();
-
     loop {}
 }
 
 #[panic_handler]
-#[cfg(not(test))]
-fn panic(info: &PanicInfo) -> ! {
-    println!("{}", info);
-    loop {}
-}
-
-#[panic_handler]
-#[cfg(test)]
 fn panic(info: &PanicInfo) -> ! {
     r_os::test_panic_handler(info)
+}
+
+#[test_case]
+fn test_println() {
+    serial_print!("test_println ... ");
+    println!("TEST");
 }

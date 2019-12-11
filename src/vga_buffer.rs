@@ -4,6 +4,9 @@ use core::fmt::{Error, Write};
 use lazy_static::lazy_static;
 use spin::Mutex;
 
+#[cfg(test)]
+use crate::serial_print;
+
 lazy_static! {
     pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
         column_position: 0,
@@ -104,7 +107,7 @@ impl Writer {
         for byte in s.bytes() {
             match byte {
                 // Supported character set: https://en.wikipedia.org/wiki/Code_page_437#Character_set
-                0x20...0x7e | b'\n' => self.write_byte(byte),
+                0x20..=0x7e | b'\n' => self.write_byte(byte),
                 _ => self.write_byte(0xfe)
             }
         }
@@ -144,6 +147,32 @@ impl fmt::Write for Writer {
 
 #[doc(hidden)]
 pub fn _print(args: fmt::Arguments) {
-    use core::fmt::Write;
     WRITER.lock().write_fmt(args).unwrap();
+}
+
+#[test_case]
+fn test_println_simple() {
+    serial_print!("test_println_simple ... ");
+    println!("a");
+}
+
+#[test_case]
+fn test_println_shift_screen() {
+    serial_print!("test_println_shift_screen ... ");
+    for _ in 0..200 {
+        println!("a");
+    }
+}
+
+#[test_case]
+fn test_println_writes_to_buffer() {
+    serial_print!("test_println_writes_to_buffer ... ");
+
+    let s = "Test string";
+    println!("{}", s);
+
+    for (i, c) in s.chars().enumerate() {
+        let screen_char = WRITER.lock().buffer.chars[BUFFER_HEIGHT - 2][i].read();
+        assert_eq!(char::from(screen_char.ascii_char), c);
+    }
 }
