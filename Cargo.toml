@@ -1,8 +1,13 @@
 [package]
 name = "r_os"
 version = "0.1.0"
-authors = ["gavadinov@gmail.com <gavadinov@gmail.com>"]
+authors = ["gavadinov <gavadinov@gmail.com>"]
 edition = "2018"
+
+[workspace]
+members = [
+    "lib/test-macro"
+]
 
 [dependencies]
 bootloader = "0.6.0"
@@ -10,6 +15,9 @@ volatile = "0.2.6"
 spin = "0.5.0"
 x86_64 = "0.7.5"
 uart_16550 = "0.2.0"
+
+[dependencies.test-macro]
+path = "lib/test-macro"
 
 [dependencies.lazy_static]
 version = "1.0"

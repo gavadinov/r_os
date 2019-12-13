@@ -1,0 +1,15 @@
+[package]
+name = "test-macro"
+version = "0.1.0"
+authors = ["gavadinov <gavadinov@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+quote = "1.0"
+
+[dependencies.syn]
+features = ["full"]
+version = "1.0"
+
+[lib]
+proc-macro = true

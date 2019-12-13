@@ -5,7 +5,8 @@
 #![reexport_test_harness_main = "test_main"]
 
 use core::panic::PanicInfo;
-use r_os::{serial_print,println};
+use r_os::{serial_print, serial_println, println};
+use test_macro::ros_test;
 
 //noinspection RsUnresolvedReference
 #[no_mangle]
@@ -19,8 +20,7 @@ fn panic(info: &PanicInfo) -> ! {
     r_os::test_panic_handler(info)
 }
 
-#[test_case]
+#[ros_test]
 fn test_println() {
-    serial_print!("test_println ... ");
     println!("TEST");
 }

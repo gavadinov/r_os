@@ -1,11 +1,14 @@
+extern crate test_macro;
+
 use volatile::Volatile;
 use core::fmt;
 use core::fmt::{Error, Write};
 use lazy_static::lazy_static;
 use spin::Mutex;
+use test_macro::ros_test;
 
 #[cfg(test)]
-use crate::serial_print;
+use crate::{serial_print, serial_println};
 
 lazy_static! {
     pub static ref WRITER: Mutex<Writer> = Mutex::new(Writer {
@@ -150,24 +153,20 @@ pub fn _print(args: fmt::Arguments) {
     WRITER.lock().write_fmt(args).unwrap();
 }
 
-#[test_case]
+#[ros_test]
 fn test_println_simple() {
-    serial_print!("test_println_simple ... ");
     println!("a");
 }
 
-#[test_case]
+#[ros_test]
 fn test_println_shift_screen() {
-    serial_print!("test_println_shift_screen ... ");
     for _ in 0..200 {
         println!("a");
     }
 }
 
-#[test_case]
+#[ros_test]
 fn test_println_writes_to_buffer() {
-    serial_print!("test_println_writes_to_buffer ... ");
-
     let s = "Test string";
     println!("{}", s);
 
