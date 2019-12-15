@@ -6,10 +6,12 @@
 
 use core::panic::PanicInfo;
 use r_os::println;
+use r_os::init;
 
 //noinspection RsUnresolvedReference
 #[no_mangle]
 pub extern "C" fn _start() -> ! {
+    init();
     println!("Asdf");
 
     #[cfg(test)]

@@ -13,9 +13,9 @@ pub fn ros_test(_attr: TokenStream, item: TokenStream) -> TokenStream {
     let outer = quote!(
         #[test_case]
         fn #ident() {
-            serial_print!(concat!(stringify!(#ident), " ... "));
+            serial_print!(concat!("\x1B[36m", file!(), " :\x1B[34m ", stringify!(#ident), "()\x1B[0m"));
             #(#body)*
-            serial_println!("[ok]");
+            serial_println!("\x1B[32m ... [ok]\x1B[0m");
         }
     );
 
