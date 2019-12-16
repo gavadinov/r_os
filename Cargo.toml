@@ -37,3 +37,6 @@ run-command = ["qemu-system-x86_64", "-drive", "format=raw,file={}"]
 [[test]]
 name = "should_panic"
 harness = false
+[[test]]
+name = "stack_overflow"
+harness = false

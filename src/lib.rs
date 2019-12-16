@@ -5,15 +5,18 @@
 #![test_runner(crate::test_runner)]
 #![reexport_test_harness_main = "test_main"]
 
-use core::panic::PanicInfo;
+use crate::gdt::init_gdt;
 use crate::interrupts::init_idt;
+use core::panic::PanicInfo;
 
+pub mod gdt;
+pub mod interrupts;
 pub mod serial;
 pub mod vga_buffer;
-pub mod interrupts;
 
 pub fn init() {
     init_idt();
+    init_gdt();
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

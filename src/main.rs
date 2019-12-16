@@ -5,8 +5,8 @@
 #![reexport_test_harness_main = "test_main"]
 
 use core::panic::PanicInfo;
-use r_os::println;
 use r_os::init;
+use r_os::println;
 
 //noinspection RsUnresolvedReference
 #[no_mangle]
